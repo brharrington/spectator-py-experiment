@@ -40,3 +40,23 @@ class Registry:
 
     def gauge(self, name, tags=None):
         return self._new_meter(name, tags, lambda id: Gauge(id))
+
+    def __iter__(self):
+        return RegistryIterator(self._meters.values())
+
+class RegistryIterator:
+
+    def __init__(self, meters):
+        self._meters = list(meters)
+        self._pos = 0
+
+    def next(self):
+        return self.__next__()
+
+    def __next__(self):
+        if self._pos < len(self._meters):
+            pos = self._pos
+            self._pos += 1
+            return self._meters[pos]
+        else:
+            raise StopIteration

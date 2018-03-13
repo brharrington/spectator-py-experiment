@@ -2,7 +2,6 @@
 
 from netflix.spectator import ManualClock
 from netflix.spectator import Registry
-import time
 import unittest
 
 class RegistryTest(unittest.TestCase):
@@ -36,6 +35,19 @@ class RegistryTest(unittest.TestCase):
         self.assertEqual(t.count(), 1)
         self.assertEqual(t.total_time(), 42)
 
+    def test_iterate_empty(self):
+        r = Registry()
+        for m in r:
+            self.fail("registry should be empty")
+
+    def test_iterate(self):
+        r = Registry()
+        r.counter("counter")
+        r.timer("timer")
+        meters = 0
+        for m in r:
+            meters += 1
+        self.assertEqual(2, meters)
 
 if __name__ == '__main__':
     unittest.main()
