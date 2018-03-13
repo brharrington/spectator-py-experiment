@@ -3,7 +3,7 @@
 from netflix.spectator.atomicnumber import AtomicNumber
 import unittest
 
-class AtomicLongTest(unittest.TestCase):
+class AtomicNumberTest(unittest.TestCase):
 
     def test_add_and_get(self):
         v = AtomicNumber(42)
