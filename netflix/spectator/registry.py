@@ -12,43 +12,28 @@ class Registry:
     def __init__(self):
         self._lock = threading.RLock()
         self._meters = {}
-    
-    def counter(self, name, tags={}):
+
+
+    def _new_meter(self, name, tags, meterFactory):
         with self._lock:
-            # TODO: check typing
+            if tags == None:
+                tags = {}
             meterId = MeterId(name, tags)
             meter = self._meters.get(meterId, None)
             if meter == None:
-                meter = Counter(meterId)
+                meter = meterFactory(meterId)
                 self._meters[meterId] = meter
             return meter
+
     
-    def timer(self, name, tags={}):
-        with self._lock:
-            # TODO: check typing
-            meterId = MeterId(name, tags)
-            meter = self._meters.get(meterId, None)
-            if meter == None:
-                meter = Timer(meterId)
-                self._meters[meterId] = meter
-            return meter
+    def counter(self, name, tags=None):
+        return self._new_meter(name, tags, lambda id: Counter(id))
+
+    def timer(self, name, tags=None):
+        return self._new_meter(name, tags, lambda id: Timer(id))
 
     def distributionSummary(self, name, tags={}):
-        with self._lock:
-            # TODO: check typing
-            meterId = MeterId(name, tags)
-            meter = self._meters.get(meterId, None)
-            if meter == None:
-                meter = DistributionSummary(meterId)
-                self._meters[meterId] = meter
-            return meter
+        return self._new_meter(name, tags, lambda id: DistributionSummary(id))
 
     def gauge(self, name, tags={}):
-        with self._lock:
-            # TODO: check typing
-            meterId = MeterId(name, tags)
-            meter = self._meters.get(meterId, None)
-            if meter == None:
-                meter = Gauge(meterId)
-                self._meters[meterId] = meter
-            return meter
+        return self._new_meter(name, tags, lambda id: Gauge(id))
