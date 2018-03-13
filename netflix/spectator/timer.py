@@ -21,7 +21,6 @@ class Timer:
 
     def stopwatch(self):
         return StopWatch(self)
-        
 
     def count(self):
         return self._count.get()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from netflix.spectator import MeterId
+from netflix.spectator.id import MeterId
 import unittest
 
 class MeterIdTest(unittest.TestCase):

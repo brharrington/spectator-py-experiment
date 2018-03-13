@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from netflix.spectator import ManualClock
 from netflix.spectator import Registry
 import time
 import unittest
@@ -27,12 +28,13 @@ class RegistryTest(unittest.TestCase):
         self.assertEqual(t.total_time(), 42)
 
     def test_timer_with(self):
-        r = Registry()
+        clock = ManualClock()
+        r = Registry(clock)
         t = r.timer("test")
         with t.stopwatch():
-            time.sleep(1)
+            clock.set_monotonic_time(42)
         self.assertEqual(t.count(), 1)
-        self.assertTrue(t.total_time() > 1)
+        self.assertEqual(t.total_time(), 42)
 
 
 if __name__ == '__main__':

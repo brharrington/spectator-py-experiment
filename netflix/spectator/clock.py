@@ -38,7 +38,7 @@ class ManualClock(Clock):
         return self._wall
 
     def monotonic_time(self):
-        raise self._monotonic
+        return self._monotonic
 
     def set_wall_time(self, t):
         self._wall = t

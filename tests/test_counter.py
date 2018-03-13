@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from netflix.spectator import MeterId
+from netflix.spectator.id import MeterId
 from netflix.spectator.counter import Counter
 import unittest
 
