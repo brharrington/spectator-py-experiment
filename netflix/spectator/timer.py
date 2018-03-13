@@ -1,5 +1,5 @@
 
-from netflix.spectator.atomiclong import AtomicLong
+from netflix.spectator.atomicnumber import AtomicNumber
 from netflix.spectator.clock import SystemClock
 
 class Timer:
@@ -7,17 +7,17 @@ class Timer:
     def __init__(self, meterId, clock=SystemClock()):
         self.meterId = meterId
         self._clock = clock
-        self._count = AtomicLong(0)
-        self._totalTime = AtomicLong(0)
-        self._totalOfSquares = AtomicLong(0)
-        self._max = AtomicLong(0)
+        self._count = AtomicNumber(0)
+        self._totalTime = AtomicNumber(0)
+        self._totalOfSquares = AtomicNumber(0)
+        self._max = AtomicNumber(0)
 
     def record(self, amount):
         if amount >= 0:
             self._count.increment_and_get()
             self._totalTime.add_and_get(amount)
             self._totalOfSquares.add_and_get(amount * amount)
-            self._max.set(amount) # TODO
+            self._max.max(amount)
 
     def stopwatch(self):
         return StopWatch(self)

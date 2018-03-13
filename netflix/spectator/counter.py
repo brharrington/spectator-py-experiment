@@ -1,11 +1,11 @@
 
-from netflix.spectator.atomiclong import AtomicLong
+from netflix.spectator.atomicnumber import AtomicNumber
 
 class Counter:
 
     def __init__(self, meterId):
         self.meterId = meterId
-        self._count = AtomicLong(0)
+        self._count = AtomicNumber(0)
 
     def increment(self, amount=1):
         self._count.add_and_get(amount)
