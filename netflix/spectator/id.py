@@ -1,6 +1,4 @@
 
-import copy
-
 class MeterId:
     def __init__(self, name, tags={}):
         self.name = name
