@@ -30,20 +30,18 @@ class SystemClock(Clock):
 
 class ManualClock(Clock):
 
-    def __init__(self):
-        __init__(self, 0, 0)
-
-    def __init__(self, wallInit, monotonicInit):
-        self.wall
+    def __init__(self, wallInit=0, monotonicInit=0):
+        self._wall = wallInit
+        self._monotonic = monotonicInit
 
     def wall_time(self):
-        return self.wall
+        return self._wall
 
     def monotonic_time(self):
-        raise self.monotonic
+        raise self._monotonic
 
     def set_wall_time(self, t):
-        self.wall = t
+        self._wall = t
 
     def set_monotonic_time(self, t):
-        self.monotonic = t
+        self._monotonic = t
