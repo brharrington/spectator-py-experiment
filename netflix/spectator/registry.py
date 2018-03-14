@@ -45,6 +45,12 @@ class Registry:
         with self._lock:
             return RegistryIterator(self._meters.values())
 
+    def start(self, config=None):
+        pass
+
+    def stop(self):
+        pass
+
 class RegistryIterator:
 
     def __init__(self, meters):

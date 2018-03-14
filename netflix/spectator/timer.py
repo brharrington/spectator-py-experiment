@@ -38,5 +38,8 @@ class StopWatch:
         self._start = self._timer._clock.monotonic_time()
 
     def __exit__(self, typ, value, traceback):
-        end = self._timer._clock.monotonic_time()
-        self._timer.record(end - self._start)
+        self._timer.record(self.duration())
+
+    def duration(self):
+        now = self._timer._clock.monotonic_time()
+        return now - self._start
