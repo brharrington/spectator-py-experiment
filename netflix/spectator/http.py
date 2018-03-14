@@ -11,15 +11,9 @@ except ImportError:
     # python3 renames urllib2 to urllib.request
     import urllib.request as urllib2
 
-logger = logging.getLogger("HttpClient")
+logger = logging.getLogger("spectator.HttpClient")
 
 class HttpClient:
-
-    def post_json(self, uri, json):
-        pass
-
-
-class UrllibHttpClient(HttpClient):
 
     def __init__(self, registry):
         self._registry = registry

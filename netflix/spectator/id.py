@@ -7,6 +7,19 @@ class MeterId:
     def tags(self):
         return self._tags.copy()
 
+    def with_stat(self, v):
+        return self.with_tag('statistic', v)
+
+    def with_tag(self, k, v):
+        tags = self._tags.copy()
+        tags[k] = v
+        return MeterId(self.name, tags)
+
+    def with_tags(self, ts):
+        tags = self._tags.copy()
+        tags.update(ts)
+        return MeterId(self.name, tags)
+
     def __hash__(self):
         return hash((self.name, frozenset(self._tags.items())))
 

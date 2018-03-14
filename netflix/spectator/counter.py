@@ -13,3 +13,8 @@ class Counter:
 
     def count(self):
         return self._count.get()
+
+    def _measure(self):
+        return {
+            self.meterId.with_stat('count'): self._count.get_and_set(0)
+        }

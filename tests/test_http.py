@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from netflix.spectator import Registry
-from netflix.spectator.http import UrllibHttpClient
+from netflix.spectator.http import HttpClient
 
 import gzip
 import io
@@ -32,7 +32,7 @@ class HttpTest(unittest.TestCase):
 
     def test_do_post_ok(self):
         r = Registry()
-        client = UrllibHttpClient(r)
+        client = HttpClient(r)
         client.post_json(self._uri, '{"status": 200}')
         tags = {
             "mode":       "http-client",
@@ -46,7 +46,7 @@ class HttpTest(unittest.TestCase):
 
     def test_do_post_404(self):
         r = Registry()
-        client = UrllibHttpClient(r)
+        client = HttpClient(r)
         client.post_json(self._uri, '{"status": 404}')
         tags = {
             "mode":       "http-client",
@@ -60,7 +60,7 @@ class HttpTest(unittest.TestCase):
 
     def test_do_post_bad_json(self):
         r = Registry()
-        client = UrllibHttpClient(r)
+        client = HttpClient(r)
         client.post_json(self._uri, '{"status": ')
         tags = {
             "mode":       "http-client",
@@ -74,7 +74,7 @@ class HttpTest(unittest.TestCase):
 
     def test_do_post_encode(self):
         r = Registry()
-        client = UrllibHttpClient(r)
+        client = HttpClient(r)
         client.post_json(self._uri, {"status": 202})
         tags = {
             "mode":       "http-client",
@@ -89,7 +89,7 @@ class HttpTest(unittest.TestCase):
     def test_do_post_network_error(self):
         self.tearDown()
         r = Registry()
-        client = UrllibHttpClient(r)
+        client = HttpClient(r)
         client.post_json(self._uri, "{}")
         tags = {
             "mode":       "http-client",

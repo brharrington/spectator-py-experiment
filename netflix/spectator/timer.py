@@ -28,6 +28,14 @@ class Timer:
     def total_time(self):
         return self._totalTime.get()
 
+    def _measure(self):
+        return {
+            self.meterId.with_stat('count'):          self._count.get_and_set(0),
+            self.meterId.with_stat('totalTime'):      self._totalTime.get_and_set(0),
+            self.meterId.with_stat('totalOfSquares'): self._totalOfSquares.get_and_set(0),
+            self.meterId.with_stat('max'):            self._max.get_and_set(0)
+        }
+
 
 class StopWatch:
 
