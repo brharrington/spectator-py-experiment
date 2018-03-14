@@ -15,8 +15,9 @@ logger = logging.getLogger("spectator.HttpClient")
 
 class HttpClient:
 
-    def __init__(self, registry):
+    def __init__(self, registry, timeout=1):
         self._registry = registry
+        self._timeout = timeout
 
     def _compress(self, entity):
         out = io.BytesIO()
@@ -67,7 +68,7 @@ class HttpClient:
 
         start = self._registry.clock().monotonic_time()
         try:
-            response = urllib2.urlopen(request)
+            response = urllib2.urlopen(request, timeout=self._timeout)
             self._add_status_tags(tags, response.code)
             msg = self._read_response(response)
             logger.debug("request succeeded with status %d: %s", response.code, msg)

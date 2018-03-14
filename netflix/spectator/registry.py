@@ -61,7 +61,7 @@ class Registry:
             config = {}
         frequency = config.get("frequency", 5.0)
         self._uri = config.get("uri", None)
-        self._client = HttpClient(self)
+        self._client = HttpClient(self, config.get("timeout", 1))
         self._timer = RegistryTimer(frequency, self._publish)
         self._timer.start()
         logger.debug("registry started with config: %s", config)
