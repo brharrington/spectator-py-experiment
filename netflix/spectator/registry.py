@@ -35,14 +35,15 @@ class Registry:
     def timer(self, name, tags=None):
         return self._new_meter(name, tags, lambda id: Timer(id, self._clock))
 
-    def distributionSummary(self, name, tags=None):
+    def distribution_summary(self, name, tags=None):
         return self._new_meter(name, tags, lambda id: DistributionSummary(id))
 
     def gauge(self, name, tags=None):
         return self._new_meter(name, tags, lambda id: Gauge(id))
 
     def __iter__(self):
-        return RegistryIterator(self._meters.values())
+        with self._lock:
+            return RegistryIterator(self._meters.values())
 
 class RegistryIterator:
 
@@ -51,6 +52,7 @@ class RegistryIterator:
         self._pos = 0
 
     def next(self):
+        # needed to work on 2.7
         return self.__next__()
 
     def __next__(self):

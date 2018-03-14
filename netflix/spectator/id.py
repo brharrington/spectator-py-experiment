@@ -16,6 +16,6 @@ class MeterId:
         return False
 
     def __str__(self):
-        items = sorted(self.tags.items)
+        items = sorted(self._tags.items())
         tagStr = ",".join(["{}={}".format(t[0], t[1]) for t in items])
         return "{}:{}".format(self.name, tagStr)
