@@ -15,5 +15,5 @@ class Gauge:
 
     def _measure(self):
         return {
-            self.meterId.with_stat('gauge'): self._count.get_and_set(float('nan'))
+            self.meterId.with_stat('gauge'): self._value.get_and_set(float('nan'))
         }
