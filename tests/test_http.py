@@ -3,7 +3,10 @@
 from netflix.spectator import Registry
 from netflix.spectator.http import UrllibHttpClient
 
+import gzip
+import io
 import json
+import sys
 import threading
 import unittest
 
@@ -100,15 +103,26 @@ class HttpTest(unittest.TestCase):
 
 class TestHandler(BaseHTTPRequestHandler):
 
+    def _compress(self, entity):
+        out = io.BytesIO()
+        with gzip.GzipFile(fileobj=out, mode="w") as f:
+            f.write(entity.encode('utf-8'))
+        return out.getvalue()
+
     def do_POST(self):
         try:
             length = int(self.headers['Content-Length'])
-            data = json.loads(self.rfile.read(length))
+            entity = io.BytesIO(self.rfile.read(length))
+            data = json.loads(gzip.GzipFile(fileobj=entity).read())
             self.send_response(data["status"])
+            self.add_header('Content-Encoding', 'gzip')
             self.end_headers()
+            self.wfile.write(self._compress("received: {}".format(data)))
         except:
+            e = sys.exc_info()[0]
             self.send_response(400)
             self.end_headers()
+            self.wfile.write("error processing request: {}".format(e).encode('utf-8'))
 
 
 if __name__ == '__main__':
