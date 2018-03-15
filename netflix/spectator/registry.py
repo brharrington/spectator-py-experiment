@@ -27,6 +27,7 @@ class Registry:
         self._clock = clock
         self._lock = threading.RLock()
         self._meters = {}
+        self._started = False
 
     def clock(self):
         return self._clock
@@ -59,24 +60,34 @@ class Registry:
             return RegistryIterator(self._meters.values())
 
     def start(self, config=None):
-        logger.info("starting registry")
-        if config is None:
-            logger.info("config not specified, using default")
-            config = defaultConfig
-        elif type(config) is not dict:
-            logger.warn("invalid config specified, using default")
-            config = defaultConfig
-        frequency = config.get("frequency", 5.0)
-        self._uri = config.get("uri", None)
-        self._client = HttpClient(self, config.get("timeout", 1))
-        self._timer = RegistryTimer(frequency, self._publish)
-        self._timer.start()
-        logger.debug("registry started with config: %s", config)
-        return RegistryStopper(self)
+        if self._started:
+            logger.debug("registry already started")
+            return RegistryStopper(None)
+        else:
+            self._started = True
+            logger.info("starting registry")
+            if config is None:
+                logger.info("config not specified, using default")
+                config = defaultConfig
+            elif type(config) is not dict:
+                logger.warn("invalid config specified, using default")
+                config = defaultConfig
+            frequency = config.get("frequency", 5.0)
+            self._uri = config.get("uri", None)
+            self._client = HttpClient(self, config.get("timeout", 1))
+            self._timer = RegistryTimer(frequency, self._publish)
+            self._timer.start()
+            logger.debug("registry started with config: %s", config)
+            return RegistryStopper(self)
 
     def stop(self):
-        logger.info("stopping registry")
-        self._timer.cancel()
+        if self._started:
+            logger.info("stopping registry")
+            self._timer.cancel()
+            self._started = False
+
+        # Even if not started, attempt to flush data to minimize risk
+        # of data loss
         self._publish()
 
     def _publish(self):
@@ -162,7 +173,8 @@ class RegistryStopper:
         pass
 
     def __exit__(self, typ, value, traceback):
-        self._registry.stop()
+        if self._registry is not None:
+            self._registry.stop()
 
 
 class RegistryIterator:

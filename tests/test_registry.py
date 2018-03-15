@@ -47,3 +47,10 @@ class RegistryTest(unittest.TestCase):
         for m in r:
             meters += 1
         self.assertEqual(2, meters)
+
+    def test_duplicate_start(self):
+        r = Registry()
+        r.start()
+        t1 = r._timer
+        r.start()
+        self.assertEqual(r._timer, t1)
