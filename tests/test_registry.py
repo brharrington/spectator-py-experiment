@@ -54,3 +54,22 @@ class RegistryTest(unittest.TestCase):
         t1 = r._timer
         r.start()
         self.assertEqual(r._timer, t1)
+
+    def test_publish_cleanup_noref(self):
+        r = Registry()
+        with r.start():
+            id = r.counter('test').meterId
+            r.counter('test').increment()
+            self.assertTrue(r._meters.has_key(id))
+            r._publish()
+            self.assertFalse(r._meters.has_key(id))
+
+    def test_publish_cleanup_ref(self):
+        r = Registry()
+        with r.start():
+            id = r.counter('test').meterId
+            c = r.counter('test')
+            c.increment()
+            self.assertTrue(r._meters.has_key(id))
+            r._publish()
+            self.assertTrue(r._meters.has_key(id))

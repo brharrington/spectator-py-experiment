@@ -92,8 +92,15 @@ class Registry:
 
     def _publish(self):
         snapshot = {}
-        for meter in self:
-            snapshot.update(meter._measure())
+        with self._lock:
+            for k, m in self._meters.items():
+                # If there are no references in user code, then we expect
+                # three references to the meter: 1) meters map, 2) local
+                # variable in this loop, 3) internal to ref count method,
+                # and 4) internal to the garbage collector.
+                if sys.getrefcount(m) == 4:
+                    del self._meters[k]
+                snapshot.update(m._measure())
 
         if logger.isEnabledFor(logging.DEBUG):
             for id, value in snapshot.items():
