@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
-
 from netflix.spectator.id import MeterId
 import unittest
+
 
 class MeterIdTest(unittest.TestCase):
 
@@ -36,6 +35,3 @@ class MeterIdTest(unittest.TestCase):
         tags["b"] = "2"
         self.assertEqual(tags, {"a": "1", "b": "2"})
         self.assertEqual(id1.tags(), {"a": "1"})
-
-if __name__ == '__main__':
-    unittest.main()

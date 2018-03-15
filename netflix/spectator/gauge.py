@@ -1,5 +1,5 @@
-
 from netflix.spectator.atomicnumber import AtomicNumber
+
 
 class Gauge:
 
@@ -14,6 +14,6 @@ class Gauge:
         self._value.set(value)
 
     def _measure(self):
-        return {
-            self.meterId.with_stat('gauge'): self._value.get_and_set(float('nan'))
-        }
+        id = self.meterId.with_stat('gauge')
+        v = self._value.get_and_set(float('nan'))
+        return {id: v}

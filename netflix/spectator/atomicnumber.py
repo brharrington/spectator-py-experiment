@@ -1,5 +1,5 @@
-
 import threading
+
 
 class AtomicNumber:
 

@@ -1,4 +1,3 @@
-
 import gzip
 import io
 import json
@@ -12,6 +11,7 @@ except ImportError:
     import urllib.request as urllib2
 
 logger = logging.getLogger("spectator.HttpClient")
+
 
 class HttpClient:
 
@@ -55,7 +55,7 @@ class HttpClient:
         tags = {
             "client": "spectator-py",
             "method": "POST",
-            "mode":   "http-client"
+            "mode": "http-client"
         }
 
         if type(data) is str:
@@ -71,11 +71,11 @@ class HttpClient:
             response = urllib2.urlopen(request, timeout=self._timeout)
             self._add_status_tags(tags, response.code)
             msg = self._read_response(response)
-            logger.debug("request succeeded with status %d: %s", response.code, msg)
+            logger.debug("request succeeded (%d): %s", response.code, msg)
         except urllib2.HTTPError as e:
             self._add_status_tags(tags, e.code)
             msg = self._read_error(e)
-            logger.warning("request failed with status %d: %s", e.code, msg)
+            logger.warning("request failed (%d): %s", e.code, msg)
         except urllib2.URLError as e:
             error = type(e).__name__
             tags["status"] = error

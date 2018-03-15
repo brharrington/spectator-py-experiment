@@ -1,4 +1,3 @@
-
 import logging
 import math
 import sys
@@ -14,6 +13,7 @@ from netflix.spectator.http import HttpClient
 
 logger = logging.getLogger("spectator.Registry")
 
+
 class Registry:
 
     def __init__(self, clock=SystemClock()):
@@ -26,15 +26,15 @@ class Registry:
 
     def _new_meter(self, name, tags, meterFactory):
         with self._lock:
-            if tags == None:
+            if tags is None:
                 tags = {}
             meterId = MeterId(name, tags)
             meter = self._meters.get(meterId, None)
-            if meter == None:
+            if meter is None:
                 meter = meterFactory(meterId)
                 self._meters[meterId] = meter
             return meter
-    
+
     def counter(self, name, tags=None):
         return self._new_meter(name, tags, lambda id: Counter(id))
 
@@ -53,7 +53,7 @@ class Registry:
 
     def start(self, config=None):
         logger.info("starting registry")
-        if config == None:
+        if config is None:
             logger.info("config not specified, data will not be sent")
             config = {}
         elif type(config) is not dict:
@@ -81,7 +81,7 @@ class Registry:
             for id, value in snapshot.items():
                 logger.debug("reporting: %s => %f", id, value)
 
-        if self._uri != None:
+        if self._uri is not None:
             json = self._measurements_to_json(snapshot)
             self._client.post_json(self._uri, json)
 
@@ -104,15 +104,15 @@ class Registry:
 
     def _operation(self, tags):
         return {
-            "count":          "add",
-            "totalAmount":    "add",
-            "totalTime":      "add",
+            "count": "add",
+            "totalAmount": "add",
+            "totalTime": "add",
             "totalOfSquares": "add",
-            "percentile":     "add",
-            "max":            "max",
-            "gauge":          "max",
-            "activeTasks":    "max",
-            "duration":       "max"
+            "percentile": "add",
+            "max": "max",
+            "gauge": "max",
+            "activeTasks": "max",
+            "duration": "max"
         }.get(tags['statistic'])
 
     def _id_to_json(self, meterId):
@@ -144,6 +144,7 @@ class RegistryTimer:
     def cancel(self):
         self._cancelled.set()
         self._thread.join()
+
 
 class RegistryStopper:
 

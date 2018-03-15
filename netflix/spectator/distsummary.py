@@ -1,5 +1,5 @@
-
 from netflix.spectator.atomicnumber import AtomicNumber
+
 
 class DistributionSummary:
 
@@ -24,10 +24,8 @@ class DistributionSummary:
         return self._totalAmount.get()
 
     def _measure(self):
-        return {
-            self.meterId.with_stat('count'):          self._count.get_and_set(0),
-            self.meterId.with_stat('totalAmount'):    self._totalAmount.get_and_set(0),
-            self.meterId.with_stat('totalOfSquares'): self._totalOfSquares.get_and_set(0),
-            self.meterId.with_stat('max'):            self._max.get_and_set(0)
-        }
-
+        ms = {}
+        for stat in ['count', 'totalAmount', 'totalOfSquares', 'max']:
+            v = getattr(self, "_{}".format(stat)).get_and_set(0)
+            ms[self.meterId.with_stat(stat)] = v
+        return ms

@@ -1,6 +1,6 @@
-
 from netflix.spectator.atomicnumber import AtomicNumber
 from netflix.spectator.clock import SystemClock
+
 
 class Timer:
 
@@ -29,12 +29,11 @@ class Timer:
         return self._totalTime.get()
 
     def _measure(self):
-        return {
-            self.meterId.with_stat('count'):          self._count.get_and_set(0),
-            self.meterId.with_stat('totalTime'):      self._totalTime.get_and_set(0),
-            self.meterId.with_stat('totalOfSquares'): self._totalOfSquares.get_and_set(0),
-            self.meterId.with_stat('max'):            self._max.get_and_set(0)
-        }
+        ms = {}
+        for stat in ['count', 'totalTime', 'totalOfSquares', 'max']:
+            v = getattr(self, "_{}".format(stat)).get_and_set(0)
+            ms[self.meterId.with_stat(stat)] = v
+        return ms
 
 
 class StopWatch:

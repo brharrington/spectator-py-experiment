@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
-
 from netflix.spectator import ManualClock
 from netflix.spectator import Registry
 import unittest
+
 
 class RegistryTest(unittest.TestCase):
 
@@ -48,6 +47,3 @@ class RegistryTest(unittest.TestCase):
         for m in r:
             meters += 1
         self.assertEqual(2, meters)
-
-if __name__ == '__main__':
-    unittest.main()

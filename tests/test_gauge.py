@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-
 from netflix.spectator.id import MeterId
 from netflix.spectator.gauge import Gauge
 import math
 import unittest
+
 
 class GaugeTest(unittest.TestCase):
 
@@ -22,7 +21,3 @@ class GaugeTest(unittest.TestCase):
         self.assertTrue(math.isnan(g.get()))
         self.assertEqual(len(ms), 1)
         self.assertEqual(ms[GaugeTest.tid.with_stat('gauge')], 42)
-
-
-if __name__ == '__main__':
-    unittest.main()

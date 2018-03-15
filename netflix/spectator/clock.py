@@ -1,5 +1,5 @@
-
 import time
+
 
 class Clock:
 
@@ -14,12 +14,12 @@ class SystemClock(Clock):
 
     def __init__(self):
         try:
-            # perf_counter was added in 3.3, use the higher resolution timer if available,
-            # otherwise fallback to the `time.time()`
+            # perf_counter was added in 3.3, use the higher resolution timer
+            # if available, otherwise fallback to the `time.time()`
             time.perf_counter()
-            self._monotonic_timer = lambda : time.perf_counter()
+            self._monotonic_timer = lambda: time.perf_counter()
         except AttributeError:
-            self._monotonic_timer = lambda : time.time()
+            self._monotonic_timer = lambda: time.time()
 
     def wall_time(self):
         return time.time()

@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
-
 from netflix.spectator.atomicnumber import AtomicNumber
 import unittest
+
 
 class AtomicNumberTest(unittest.TestCase):
 
@@ -12,6 +11,3 @@ class AtomicNumberTest(unittest.TestCase):
     def test_get_and_add(self):
         v = AtomicNumber(42)
         self.assertEqual(42, v.get_and_add(2))
-
-if __name__ == '__main__':
-    unittest.main()
