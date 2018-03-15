@@ -60,9 +60,9 @@ class RegistryTest(unittest.TestCase):
         with r.start():
             id = r.counter('test').meterId
             r.counter('test').increment()
-            self.assertTrue(r._meters.has_key(id))
+            self.assertTrue(id in r._meters)
             r._publish()
-            self.assertFalse(r._meters.has_key(id))
+            self.assertFalse(id in r._meters)
 
     def test_publish_cleanup_ref(self):
         r = Registry()
@@ -70,6 +70,6 @@ class RegistryTest(unittest.TestCase):
             id = r.counter('test').meterId
             c = r.counter('test')
             c.increment()
-            self.assertTrue(r._meters.has_key(id))
+            self.assertTrue(id in r._meters)
             r._publish()
-            self.assertTrue(r._meters.has_key(id))
+            self.assertTrue(id in r._meters)

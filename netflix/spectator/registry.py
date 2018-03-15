@@ -93,7 +93,7 @@ class Registry:
     def _publish(self):
         snapshot = {}
         with self._lock:
-            for k, m in self._meters.items():
+            for k, m in list(self._meters.items()):
                 # If there are no references in user code, then we expect
                 # three references to the meter: 1) meters map, 2) local
                 # variable in this loop, 3) internal to ref count method,
