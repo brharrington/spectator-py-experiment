@@ -13,6 +13,13 @@ from netflix.spectator.http import HttpClient
 
 logger = logging.getLogger("spectator.Registry")
 
+try:
+    from netflix.spectator.config import default_config
+    defaultConfig = default_config()
+    logger.debug("loaded default config: %s", defaultConfig)
+except:
+    defaultConfig = {}
+
 
 class Registry:
 
@@ -54,11 +61,11 @@ class Registry:
     def start(self, config=None):
         logger.info("starting registry")
         if config is None:
-            logger.info("config not specified, data will not be sent")
-            config = {}
+            logger.info("config not specified, using default")
+            config = defaultConfig
         elif type(config) is not dict:
-            logger.warn("invalid config specified, data will not be sent")
-            config = {}
+            logger.warn("invalid config specified, using default")
+            config = defaultConfig
         frequency = config.get("frequency", 5.0)
         self._uri = config.get("uri", None)
         self._client = HttpClient(self, config.get("timeout", 1))
