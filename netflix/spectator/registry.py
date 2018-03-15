@@ -14,7 +14,7 @@ from netflix.spectator.http import HttpClient
 logger = logging.getLogger("spectator.Registry")
 
 try:
-    from netflix.spectator.config import default_config
+    from netflix.spectatorconfig import default_config
     defaultConfig = default_config()
     logger.debug("loaded default config: %s", defaultConfig)
 except:
