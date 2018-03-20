@@ -1,4 +1,4 @@
-from netflix.spectator.atomicnumber import AtomicNumber
+from spectator.atomicnumber import AtomicNumber
 
 
 class Gauge:

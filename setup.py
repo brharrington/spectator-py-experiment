@@ -10,7 +10,7 @@ setup(
     author_email='netflix-atlas@googlegroups.com',
     license='Apache 2.0',
     url='https://github.com/brharrington/spectator-py/',
-    packages=['netflix', 'netflix.spectator'],
+    packages=['spectator'],
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha

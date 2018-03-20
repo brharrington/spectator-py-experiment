@@ -1,5 +1,5 @@
-from netflix.spectator import ManualClock
-from netflix.spectator import Registry
+from spectator import ManualClock
+from spectator import Registry
 import unittest
 
 

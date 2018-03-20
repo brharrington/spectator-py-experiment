@@ -3,18 +3,18 @@ import math
 import sys
 import threading
 
-from netflix.spectator.id import MeterId
-from netflix.spectator.clock import SystemClock
-from netflix.spectator.counter import Counter
-from netflix.spectator.timer import Timer
-from netflix.spectator.distsummary import DistributionSummary
-from netflix.spectator.gauge import Gauge
-from netflix.spectator.http import HttpClient
+from spectator.id import MeterId
+from spectator.clock import SystemClock
+from spectator.counter import Counter
+from spectator.timer import Timer
+from spectator.distsummary import DistributionSummary
+from spectator.gauge import Gauge
+from spectator.http import HttpClient
 
 logger = logging.getLogger("spectator.Registry")
 
 try:
-    from netflix.spectatorconfig import default_config
+    from spectatorconfig import default_config
     defaultConfig = default_config()
     logger.debug("loaded default config: %s", defaultConfig)
 except:

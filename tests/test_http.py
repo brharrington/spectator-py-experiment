@@ -1,5 +1,5 @@
-from netflix.spectator import Registry
-from netflix.spectator.http import HttpClient
+from spectator import Registry
+from spectator.http import HttpClient
 
 import gzip
 import io

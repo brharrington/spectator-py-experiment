@@ -1,4 +1,4 @@
-from netflix.spectator.id import MeterId
+from spectator.id import MeterId
 import unittest
 
 

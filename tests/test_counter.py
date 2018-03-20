@@ -1,5 +1,5 @@
-from netflix.spectator.id import MeterId
-from netflix.spectator.counter import Counter
+from spectator.id import MeterId
+from spectator.counter import Counter
 import unittest
 
 

@@ -1,5 +1,5 @@
-from netflix.spectator.id import MeterId
-from netflix.spectator.distsummary import DistributionSummary
+from spectator.id import MeterId
+from spectator.distsummary import DistributionSummary
 import unittest
 
 

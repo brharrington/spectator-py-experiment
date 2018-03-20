@@ -1,5 +1,5 @@
-from netflix.spectator.id import MeterId
-from netflix.spectator.gauge import Gauge
+from spectator.id import MeterId
+from spectator.gauge import Gauge
 import math
 import unittest
 

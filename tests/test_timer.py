@@ -1,5 +1,5 @@
-from netflix.spectator.id import MeterId
-from netflix.spectator.timer import Timer
+from spectator.id import MeterId
+from spectator.timer import Timer
 import unittest
 
 

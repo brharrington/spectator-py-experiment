@@ -1,4 +1,4 @@
-from netflix.spectator import GlobalRegistry
+from spectator import GlobalRegistry
 import unittest
 
 

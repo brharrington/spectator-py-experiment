@@ -1,5 +1,5 @@
-from netflix.spectator.atomicnumber import AtomicNumber
-from netflix.spectator.clock import SystemClock
+from spectator.atomicnumber import AtomicNumber
+from spectator.clock import SystemClock
 
 
 class Timer:
