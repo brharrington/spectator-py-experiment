@@ -115,12 +115,44 @@ class Registry:
         s = m['tags']['statistic']
         return not math.isnan(m['value']) and (v > 0 or s == 'gauge')
 
-    def _measurements_to_json(self, data):
-        ms = [self._measurement_to_json(id, v) for id, v in list(data.items())]
-        return [m for m in ms if self._check_value(m)]
+    def _build_string_table(self, payload, data):
+        strings = {}
+        strings["name"] = 0
+        for id in data.keys():
+            strings[id.name] = 0
+            for k, v in id.tags().items():
+                strings[k] = 0
+                strings[v] = 0
+        keys = strings.keys()
+        keys.sort()
+        payload.append(len(keys))
+        payload.extend(keys)
+        for i, k in enumerate(keys):
+            strings[k] = i
+        return strings
 
-    def _measurement_to_json(self, id, value):
-        tags = self._id_to_json(id)
+    def _measurements_to_json(self, data):
+        payload = []
+        strings = self._build_string_table(payload, data)
+        for id, v in data.items():
+            self._append_measurement(strings, payload, id, v)
+        return payload
+
+    def _append_measurement(self, strings, payload, id, value):
+        tags = id.tags()
+        op = self._operation(tags)
+        if op is not None:
+            payload.append(len(tags) + 1)
+            for k, v in tags.items():
+                payload.append(strings[k])
+                payload.append(strings[v])
+            payload.append(strings["name"])
+            payload.append(strings[id.name])
+            payload.append(op)
+            payload.append(value)
+        else:
+            logger.warn("invalid statistic for %s", id)
+
         return {
             "op": self._operation(tags),
             "tags": tags,
@@ -128,22 +160,19 @@ class Registry:
         }
 
     def _operation(self, tags):
+        addOp = 0
+        maxOp = 10
         return {
-            "count": "add",
-            "totalAmount": "add",
-            "totalTime": "add",
-            "totalOfSquares": "add",
-            "percentile": "add",
-            "max": "max",
-            "gauge": "max",
-            "activeTasks": "max",
-            "duration": "max"
+            "count": addOp,
+            "totalAmount": addOp,
+            "totalTime": addOp,
+            "totalOfSquares": addOp,
+            "percentile": addOp,
+            "max": maxOp,
+            "gauge": maxOp,
+            "activeTasks": maxOp,
+            "duration": maxOp
         }.get(tags['statistic'])
-
-    def _id_to_json(self, meterId):
-        tags = meterId.tags()
-        tags['name'] = meterId.name
-        return tags
 
 
 class RegistryTimer:
